@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* Configuración extendida directamente en CSS */
+@layer utilities {
+  .h-screen-minus-28 {
+    height: calc(100vh - 11rem);
+  }
+}
