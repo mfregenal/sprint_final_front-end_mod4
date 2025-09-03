@@ -12,20 +12,20 @@ export const fetchCategoriesAPI = async () => {
 // ELIMINAR UNA CATEGORÍA
 export const deleteCategoryAPI = async (id) => {
   const url = `${APIRoute}/categories/${id}`
-  const response = await axios.delete(url)
+  const response = await axios.delete(url, { withCredentials: true })
   return response.data
 }
 
 // AGREGAR NUEVA CATEGORÍA
 export const postCategoryAPI = async (data) => {
   const url = `${APIRoute}/categories/create`
-  const response = await axios.post(url, data)
+  const response = await axios.post(url, data, { withCredentials: true })
   return response.data
 }
 
 // EDITAR UNA CATEGORÍA
 export const putCategoryAPI = async (data) => {
   const url = `${APIRoute}/categories/edit`
-  const response = await axios.put(url, data)
+  const response = await axios.put(url, data, { withCredentials: true })
   return response.data
 }

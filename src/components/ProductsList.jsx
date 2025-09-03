@@ -10,8 +10,9 @@ function ProductsList () {
   const [ maxPrice, setMaxPrice ] = useState(9999999)
   const [ category, setCategory ] = useState(null)
   const { productData, getProduct, error, loading } = useProduct()
-    const { getCategory } = useCategory()
+  const { getCategory } = useCategory()
 
+  // Agrupo las acciones para enviar una sola vez
   const filterActions = {
     setCategory,
     setInOrder,
@@ -24,44 +25,82 @@ function ProductsList () {
   let filteredProducts = [...productData]
 
   if (inOrder === "smaller") {
-    filteredProducts.sort((a, b) => a.precio - b.precio)
+    filteredProducts.sort((a, b) => a.precio - b.precio) // Ordena de menor a mayor
   } else if (inOrder === "largest") {
-    filteredProducts.sort((a, b) => b.precio - a.precio)
+    filteredProducts.sort((a, b) => b.precio - a.precio) // Ordena de mayor a menor
   }
 
-  filteredProducts = filteredProducts.filter( product => product.precio >= minPrice && product.precio <= maxPrice )
+  // Filtra los productos por el rango de precio indicado
+  filteredProducts = filteredProducts.filter(
+    product => product.precio >= minPrice && product.precio <= maxPrice
+  )
 
+  // Filtra los productos por la categoría seleccionada
   if (category) {
-    filteredProducts = filteredProducts.filter( product => product.categoria === category)
+    filteredProducts = filteredProducts.filter(
+      product => product.categoria.nombre === category
+    )
   }
 
-  useEffect( () => {
+  // Obtiene las categorías y productos cuando se carga el componente
+  useEffect(() => {
     getCategory()
-    getProduct("/")
+    getProduct()
   }, [])
 
   return (
-    <div className="flex flex-col justify-center items-center mt-10 mx-40 p-2 mt-35">
-      <h1 className="text-5xl font-extrabold mb-10">Nuestros Productos</h1>
+    <div className="flex flex-col justify-center items-center mt-10 mx-4 sm:mx-8 md:mx-12 lg:mx-40 p-2 
+      text-gray-900 dark:text-gray-100">
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-6 sm:mb-10 text-center">
+        Nuestros Productos
+      </h1>
 
+      {/* Barra de filtros */}
       <FiltersBar action={filterActions} />
       
-        {
-          error ? console.log(error)
-            : loading ? <p>cargando.. </p>
-            : productData.length > 0 ?
-              filteredProducts.length > 0 ?
-                <div className="grid grid-cols-6 gap-10">
-                  {
-                    filteredProducts?.map( (product) => (
-                      <ProductCard key={product._id} product={product} />
-                    ))
-                  }
-                </div>
-              : <p className="italic font-semibold text-xl">... Actualmente no contamos con productos con tus parámetros de búsqueda ...</p>
-            : <p className="italic font-semibold text-xl">... Nuestro catálogo está en preparación. Pronto encontrarás productos increíbles aquí ...</p>
-        }
-      </div>
+      {
+        // Muestra el error en caso de que ocurra uno
+        error ? (
+          <p className="text-red-600 dark:text-red-400 flex items-center gap-2 mt-3">
+            <i className="bi bi-exclamation-circle-fill"></i>
+            {error}
+          </p>
+        )
+        // Muestra un mensaje de cargando en lo que se obtiene los productos
+        : loading ? (
+          <p className="text-blue-600 dark:text-blue-400 flex items-center gap-2 mt-3">
+            <i className="bi bi-arrow-repeat fs-4 spin"></i>
+            Cargando productos...
+          </p>
+        )
+        // Muestra los productos si los hay
+        : productData.length > 0 ? (
+          // Muestra los productos si los hay después de los filtros
+          filteredProducts.length > 0 ? (
+            <div
+              className="grid
+                grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-6
+                gap-6 sm:gap-8 md:gap-14 lg:gap-10
+                justify-items-center
+                w-full
+              "
+            >
+              {filteredProducts?.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <p className="italic font-semibold text-center text-lg sm:text-xl mt-6 text-gray-700 dark:text-gray-300">
+              ... Actualmente no contamos con productos con tus parámetros de búsqueda ...
+            </p>
+          )
+        ) : (
+          <p className="italic font-semibold text-center text-lg sm:text-xl mt-6 text-gray-700 dark:text-gray-300">
+            ... Nuestro catálogo está en preparación. Pronto encontrarás productos increíbles aquí ...
+          </p>
+        )
+      }
+    </div>
   )
 }
 

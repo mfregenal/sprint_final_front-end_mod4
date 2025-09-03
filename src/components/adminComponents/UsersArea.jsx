@@ -1,36 +1,40 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { toast } from 'react-toastify'
-import { useCategory } from "../../contexts/CategoryContext"
-import { AddCategory } from "./AddCategory"
 import { ListItems } from "./ListItems"
 import { confirmAction } from "../../utils/ConfirmAction"
+import { useNavigate } from "react-router"
+import { useUser } from "../../contexts/UserContext"
 
-export const CategoryArea = () => {
-  const { categoryData, getCategory, deleteCategory, error } = useCategory()
-  const [ showAddCategory, setShowAddCategory ] = useState(false)
+export const UsersArea = () => {
+  const { userData, getUsers, deleteUser, error  } = useUser()
+  const navigate = useNavigate()
 
-  // Obtiene las categorías al cargar la pagina
+  // Obtiene todos los usuarios al cargar la pagina
   useEffect(() => {
-    getCategory()
+    getUsers()
   }, [])
 
   const handleButtonDelete = async (id) => {
     const confirmed = await confirmAction({
-      title: '¿Eliminar categoría?',
-      text: 'Esta acción eliminará la categoría permanentemente.',
+      title: '¿Eliminar usuario?',
+      text: 'Esta acción eliminará el usuario permanentemente.',
       confirmText: 'Sí, eliminar'
     })
 
     if (confirmed) {
-      const message = await deleteCategory(id)
+      const message = await deleteUser(id)
 
       if (message) {
-        await getCategory()
+        await getUsers()
         toast.success(message)
       } else {
         toast.error(error)
       }
     }
+  }
+
+  const handleAddUser = () => {
+    navigate("/register")
   }
 
   return (
@@ -52,7 +56,7 @@ export const CategoryArea = () => {
 
           {/* BOTÓN NUEVO */}
           <button
-            onClick={() => setShowAddCategory(true)}
+            onClick={() => handleAddUser()}
             className="
               bg-green-500 
               py-1 px-2 xs:py-1.5 xs:px-3 sm:py-2 sm:px-4
@@ -68,20 +72,12 @@ export const CategoryArea = () => {
           </button>
         </div>
 
-        {/* LISTADO DE CATEGORÍAS */}
+        {/* LISTADO DE USUARIOS */}
         <ListItems
-          itemsData={categoryData}
+          itemsData={userData}
           handleButtonDelete={handleButtonDelete}
-          type={"1"}
+          type={"3"}
         />
-
-        {/* SI SE HIZO CLIC EN EL BOTÓN NUEVO */}
-        {showAddCategory && (
-          <>
-            <div className="fixed inset-0 bg-black/40 z-4 pointer-events-auto"/>
-            <AddCategory setShowAddCategory={setShowAddCategory}/> 
-          </>
-        )}
       </div>
     </>
   )

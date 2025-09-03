@@ -10,14 +10,16 @@ function useCart() {
     setMyCartList(initialList); //CARGO EL LISTADO DE PRODUCTOS GUARDADOS EN LOCALSTORAGE
   }, []);
 
-  // AGREGAR NUEVA PELÍCULA A MYPRODCUTLIST (HANDLER)
+
+
+  // AGREGAR UN NUEVO PRODUCTO A CARTLIST (HANDLER)
   const addProduct = (newProduct) => {
 
-    const producExists = myCartList.some( product => product._id === newProduct._id ) // VERIFICAMOS SI EXISTE EL PRODUCTO EN EL LISTADO
-    let newCartList
+    const productExists = myCartList.some( product => product._id === newProduct._id ) // VERIFICAMOS SI EXISTE EL PRODUCTO EN EL LISTADO
+    let newCartList = {}
 
-    // REVISO QUE EL PRODUCTO NO ESTE REPETIDA
-    if (producExists) {
+    // REVISO QUE EL PRODUCTO NO ESTE REPETIDO
+    if (productExists) {
       newCartList = myCartList.map( product => {
         if (product._id === newProduct._id) {
           return { ...product, cantidad: product.cantidad + 1 }
@@ -28,30 +30,39 @@ function useCart() {
       newCartList = [...myCartList, { ...newProduct, cantidad: 1 }]
     }
 
-    // const newCartList = [...myCartList, newProduct] //(SPREAD OPERATOR)
     setMyCartList( newCartList )
     localStorage.setItem(key, JSON.stringify(newCartList)) //CONVERTIR A FORMATO JSON
   }
 
-  // ELIMINAR UN PRODUCTO DE MYPRODUCTLIST
+
+
+  // ELIMINAR UN PRODUCTO DE CARTLIST
   const deleteProduct = (_id) => {
-    const newCartList = myCartList.filter ( product => product._id !== _id )
+    const newCartList = myCartList.filter ( product => product._id !== _id ) // OBTENGO LOS PRODUCTOS QUE NO COINCIDAN
+
     if (newCartList.length === 0){
-      localStorage.removeItem(key);
+      localStorage.removeItem(key); // SI NO QUEDAN PRODUCTOS ELIMINO EL LOCALSTORAGE
     } else {
-      localStorage.setItem(key, JSON.stringify(newCartList))
+      localStorage.setItem(key, JSON.stringify(newCartList)) // CARGO EL LOCALSTORAGE CON LOS PRODUCTOS RESTANTES
     }
-    setMyCartList(newCartList)
+
+    setMyCartList(newCartList) // CARGO EL CARRITO CON LOS PRODUCTOS RESTANTES
   }
+
+
 
   // ACTUALIZAR LA CANTIDAD DE UN PRODUCTO
   const updateProductCantidad = (_id, nuevaCantidad) => {
+    // ASIGNO LA NUEVA CANTIDAD AL PRODUCTO QUE CORRESPONDA
     const newCartList = myCartList.map(product =>
       product._id === _id ? { ...product, cantidad: nuevaCantidad } : product
     )
+
     setMyCartList(newCartList)
     localStorage.setItem(key, JSON.stringify(newCartList))
   }
+
+
 
   //LIMPIAR CARRITO
   const cleanCart = () => {

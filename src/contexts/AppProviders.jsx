@@ -1,12 +1,22 @@
-import { ProductProvider } from './ProductContext.jsx'
-import { CategoryProvider } from './CategoryContext.jsx'
-import { CartProvider } from './CartContext.jsx'
+import { AuthProvider } from "./AuthContext";
+import { CartProvider } from "./CartContext";
+import { CategoryProvider } from "./CategoryContext";
+import { ProductProvider } from "./ProductContext";
+import { ThemeProvider } from "./ThemeContext";
+import { UserProvider } from "./UserContext";
+
 
 export const AppProviders = ({ children }) => (
   <ProductProvider>
     <CategoryProvider>
       <CartProvider>
-        {children}
+        <AuthProvider>
+          <ThemeProvider>
+            <UserProvider>
+              {children}
+            </UserProvider>
+          </ThemeProvider>
+        </AuthProvider>
       </CartProvider>
     </CategoryProvider>
   </ProductProvider>

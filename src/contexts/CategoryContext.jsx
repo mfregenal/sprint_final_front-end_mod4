@@ -22,16 +22,24 @@ export const CategoryProvider = ({ children }) => {
     }
   }
 
+
+
   // ELIMINAR UNA CATEGORÍA
   const deleteCategory = async (id) => {
     setError(null)
+
     try {
       const response = await deleteCategoryAPI (id)
-      return response.message
-    } catch (err) {
-      setError(err.message)
+
+      return response
+    } catch (error) {
+      const msg = error.response?.data?.message || "Error inesperado"
+
+      setError(msg)
     }
   }
+
+
 
   // AGREGAR NUEVA CATEGORÍA
   const addCategory = async (data) => {
@@ -39,11 +47,16 @@ export const CategoryProvider = ({ children }) => {
 
     try {
       const response = await postCategoryAPI (data)
-      return response.message
-    } catch (err) {
-      setError(err.message)
+      
+      return response
+    } catch (error) {
+      const msg = error.response?.data?.message || "Error inesperado"
+
+      setError(msg)
     }
   }
+
+
 
   // EDITAR UNA CATEGORÍA
   const editCategory = async (data) => {
@@ -51,9 +64,12 @@ export const CategoryProvider = ({ children }) => {
 
     try {
       const response = await putCategoryAPI (data)
-      return response.message
-    } catch (err) {
-      setError(err.message)
+
+      return response
+    } catch (error) {
+      const msg = error.response?.data?.message || "Error inesperado"
+
+      setError(msg)
     }
   }
 

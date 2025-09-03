@@ -7,26 +7,34 @@ function ProductCart({ product }) {
   const { deleteProduct, updateProductCantidad } = useCartContext()
   const { counter, increment, decrement } = useCounter(product.cantidad)
 
+  // Actualiza la cantidad del producto cada vez que counter cambia
   useEffect(() => {
     updateProductCantidad(product._id, counter)
   }, [counter])
 
+  // Elimina cierto producto del carrito
   const handleDelete = (_id) => {
     deleteProduct(_id)
     toast.success("Producto eliminado del carrito")
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between w-full bg-gray-100 rounded-2xl shadow-md p-4 gap-4 transition hover:shadow-lg">
+    <div className="flex flex-col md:flex-row items-center justify-between w-full 
+      bg-gray-100 dark:bg-gray-800 
+      rounded-2xl shadow-md p-4 gap-4 transition hover:shadow-lg">
       
       {/* Nombre y precio */}
-      <div className="flex flex-col items-center md:items-start text-gray-800 w-full md:w-2/4">
+      <div className="flex flex-col items-center md:items-start text-gray-800 dark:text-gray-100 w-full md:w-2/4">
         <h3 className="text-lg font-semibold text-center md:text-left">{product.nombre}</h3>
-        <p className="text-sm text-gray-600"><strong>Precio:</strong> ${product.precio}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          <strong>Precio:</strong> ${product.precio}
+        </p>
       </div>
 
       {/* Contador */}
-      <div className="flex items-center justify-center gap-3 bg-white rounded-xl px-3 py-2 shadow-inner">
+      <div className="flex items-center justify-center gap-3 
+        bg-white dark:bg-gray-700 
+        rounded-xl px-3 py-2 shadow-inner">
         <button
           onClick={decrement}
           className="text-yellow-500 hover:text-yellow-600 text-xl transition-transform hover:scale-110"
@@ -34,7 +42,7 @@ function ProductCart({ product }) {
           <i className="bi bi-dash-circle"></i>
         </button>
 
-        <p className="text-base font-medium px-2">{counter}</p>
+        <p className="text-base font-medium px-2 text-gray-800 dark:text-gray-100">{counter}</p>
 
         <button
           onClick={increment}

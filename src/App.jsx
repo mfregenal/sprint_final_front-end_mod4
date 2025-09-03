@@ -1,5 +1,5 @@
-import { AppRoutes } from "./Routes/AppRoutes"
 import { ToastContainer } from "react-toastify"
+import { AppRoutes } from "./Routes/AppRoutes"
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         draggable={false}
         pauseOnHover={false}
         theme="light"
-        style={{ zIndex: 2 }}
+        style={{ zIndex: 12 }}
       />
       <AppRoutes/>
     </>

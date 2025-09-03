@@ -6,17 +6,27 @@ function FiltersBar({ action }) {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [sortOrder, setSortOrder] = useState("default")
 
-  useEffect ( () => {
-    if ( action.maxPrice === "" ){
+  // RESET NUEVAMENTE EL PRECIO MÁXIMO
+  useEffect(() => {
+    if (action.maxPrice === "") {
       action.setMaxPrice(9999999)
     }
   }, [action.maxPrice])
 
   return (
-    <div className="flex flex-wrap gap-6 items-center mb-10 w-full justify-center">
-
+    <div
+      className="
+        flex flex-wrap
+        gap-4 lg:gap-6
+        items-center
+        mb-10
+        w-full
+        justify-center
+        text-gray-800 dark:text-gray-100
+      "
+    >
       {/* CATEGORÍA */}
-      <div>
+      <div className="flex items-center text-sm lg:text-base">
         <label className="font-semibold mr-2">Categoría:</label>
         <select
           value={selectedCategory}
@@ -24,17 +34,22 @@ function FiltersBar({ action }) {
             setSelectedCategory(e.target.value)
             action.setCategory(e.target.value)
           }}
-          className="border px-3 py-1 rounded"
+          className="border border-gray-300 dark:border-gray-600 
+                    bg-white dark:bg-gray-800 
+                    text-gray-800 dark:text-gray-100
+                    px-2 py-1 rounded text-sm lg:text-base"
         >
           <option value="">Todas</option>
-          {categoryData?.map( (category) => (
-            <option key={category._id} value={category.nombre}>{category.nombre}</option>
+          {categoryData?.map((category) => (
+            <option key={category._id} value={category.nombre}>
+              {category.nombre}
+            </option>
           ))}
         </select>
       </div>
 
       {/* Precio mínimo */}
-      <div>
+      <div className="flex items-center text-sm lg:text-base">
         <label className="font-semibold mr-2">Precio mínimo:</label>
         <input
           type="number"
@@ -43,13 +58,16 @@ function FiltersBar({ action }) {
           onChange={(e) => {
             action.setMinPrice(e.target.value)
           }}
-          className="border px-3 py-1 rounded w-28"
+          className="border border-gray-300 dark:border-gray-600 
+                    bg-white dark:bg-gray-800 
+                    text-gray-800 dark:text-gray-100
+                    px-2 py-1 rounded w-20 lg:w-28 text-sm lg:text-base"
           placeholder="Ej: 1000"
         />
       </div>
 
       {/* Precio máximo */}
-      <div>
+      <div className="flex items-center text-sm lg:text-base">
         <label className="font-semibold mr-2">Precio máximo:</label>
         <input
           type="number"
@@ -58,13 +76,16 @@ function FiltersBar({ action }) {
           onChange={(e) => {
             action.setMaxPrice(e.target.value)
           }}
-          className="border px-3 py-1 rounded w-28"
+          className="border border-gray-300 dark:border-gray-600 
+                    bg-white dark:bg-gray-800 
+                    text-gray-800 dark:text-gray-100
+                    px-2 py-1 rounded w-20 lg:w-28 text-sm lg:text-base"
           placeholder="Ej: 5000"
         />
       </div>
 
       {/* Ordenamiento */}
-      <div>
+      <div className="flex items-center text-sm lg:text-base">
         <label className="font-semibold mr-2">Ordenar por:</label>
         <select
           value={sortOrder}
@@ -72,7 +93,10 @@ function FiltersBar({ action }) {
             setSortOrder(e.target.value)
             action.setInOrder(e.target.value)
           }}
-          className="border px-3 py-1 rounded"
+          className="border border-gray-300 dark:border-gray-600 
+                    bg-white dark:bg-gray-800 
+                    text-gray-800 dark:text-gray-100
+                    px-2 py-1 rounded text-sm lg:text-base"
         >
           <option value="default">Por defecto</option>
           <option value="smaller">Menor a mayor</option>
