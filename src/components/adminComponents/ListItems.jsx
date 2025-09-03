@@ -28,7 +28,7 @@ export const ListItems = ({ itemsData, handleButtonDelete, type }) => {
             `}
           >
             <p className="text-sm xs:text-base sm:text-lg lg:text-xl truncate">
-              {item.username}
+              { type === "3" ? item.username : item.nombre}
             </p>
 
             {/* BOTONES */}
