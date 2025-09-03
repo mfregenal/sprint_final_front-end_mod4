@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import axios from "axios"
 import { toast } from "react-toastify"
 import { useNavigate } from "react-router"
-import { fetchCheckLogin, fetchLogin, fetchLogout } from "../services/authService"
+import { fetchCheckLogin, fetchLogin, fetchLogout, fetchRegister } from "../services/authService"
 
 const AuthContext = createContext()
 
@@ -43,7 +42,11 @@ export const AuthProvider = ({ children }) => {
       const response = await fetchLogin(credentials)
       await checkLogin()
       toast.success("Inicio de sesión exitoso")
-      { response.role.name === "Admin" ? navigate("/Admin") : navigate("/") }
+      if (response.role.name === "Admin"){
+        navigate("/Admin")
+      } else {
+        navigate("/")
+      }
     } catch {
       toast.error("Credenciales inválidas")
     }
@@ -54,11 +57,9 @@ export const AuthProvider = ({ children }) => {
   // REGISTRO
   const register = async (data) => {
     try {
-      await axios.post("http://localhost:3000/auth/register", data, {
-        withCredentials: true
-      })
-      toast.success("Registro exitoso")
+      await fetchRegister(data)
       await checkLogin()
+      toast.success("Registro exitoso")
       navigate("/")
     } catch {
       toast.error("Error al registrar usuario")

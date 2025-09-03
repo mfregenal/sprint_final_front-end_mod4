@@ -9,6 +9,13 @@ export const fetchLogin = async (data) => {
   return response.data
 }
 
+// REGISTRAR UN NUEVO USUARIO
+export const fetchRegister = async (data) => {
+  const url = `${authRoute}/register`
+  const response = await axios.post(url, data, {withCredentials: true })
+  return response.data
+}
+
 // CHECK DE SI EL USUARIO AUN SIGUE LOGEADO
 export const fetchCheckLogin = async () => {
   const url = `${authRoute}/check`
